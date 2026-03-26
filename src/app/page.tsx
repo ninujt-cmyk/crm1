@@ -409,10 +409,21 @@ export default function TelecallerGuidePresentation() {
       
       setCheckingImages(prev => ({ ...prev, [sectionId]: true }))
       try {
-        const response = await fetch(`/api/generate-presentation-image?sectionId=${sectionId}`)
-        const data = await response.json()
-        if (data.exists) {
-          setGeneratedImages(prev => ({ ...prev, [sectionId]: data.imageUrl }))
+        const safeName = sectionId.replace(/[^a-zA-Z0-9-]/g, '_')
+        const imageUrl = `/presentation-images/telecaller_${safeName}.png`
+        
+        // Use a direct HEAD request to verify file exists from public assets (better for Vercel)
+        const response = await fetch(imageUrl, { method: 'HEAD' })
+        
+        if (response.ok) {
+          setGeneratedImages(prev => ({ ...prev, [sectionId]: imageUrl }))
+        } else {
+          // If HEAD fails, the file likely doesn't exist
+          setGeneratedImages(prev => {
+            const next = { ...prev }
+            delete next[sectionId]
+            return next
+          })
         }
       } catch (error) {
         console.error('Error checking image:', error)
