@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     // Create a safe filename from sectionId or generate a hash
     const safeName = sectionId 
-      ? sectionId.replace(/[^a-zA-Z0-9]/g, '_')
+      ? sectionId.replace(/[^a-zA-Z0-9-]/g, '_')
       : crypto.createHash('md5').update(prompt + Date.now()).digest('hex')
     
     const filename = `telecaller_${safeName}.png`
@@ -97,7 +97,7 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  const safeName = sectionId.replace(/[^a-zA-Z0-9]/g, '_')
+  const safeName = sectionId.replace(/[^a-zA-Z0-9-]/g, '_')
   const filename = `telecaller_${safeName}.png`
   const filepath = path.join(process.cwd(), 'public', 'presentation-images', filename)
 
