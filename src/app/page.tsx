@@ -601,7 +601,7 @@ export default function TelecallerGuidePresentation() {
                         <img
                           src={generatedImages[sectionId]}
                           alt={currentStep.sections[activeSection].title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                         />
                       ) : checkingImages[sectionId] ? (
                         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 text-white p-6">
