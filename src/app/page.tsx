@@ -623,7 +623,7 @@ export default function TelecallerGuidePresentation() {
                           <div className="mt-6 p-4 bg-slate-700/50 rounded-lg border border-slate-600">
                             <p className="text-xs text-slate-300 text-center">
                               <strong>To add a screenshot:</strong> Place an image file named<br/>
-                              <code className="bg-slate-800 px-2 py-1 rounded text-emerald-400">telecaller_{sectionId}.png</code><br/>
+                              <code className="bg-slate-800 px-2 py-1 rounded text-emerald-400">telecaller_{sectionId}.[png/jpg/jpeg]</code><br/>
                               in the <code className="bg-slate-800 px-2 py-1 rounded text-emerald-400">public/presentation-images</code> folder
                             </p>
                           </div>
