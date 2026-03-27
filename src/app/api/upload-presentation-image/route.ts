@@ -47,7 +47,8 @@ export async function POST(request: NextRequest) {
 
     // Create safe filename
     const safeName = sectionId.replace(/[^a-zA-Z0-9-]/g, '_')
-    const ext = path.extname(file.name) || '.png'
+    // Get original extension, fallback to .png if missing
+    const ext = path.extname(file.name).toLowerCase() || '.png'
     const filename = `telecaller_${safeName}${ext}`
     const publicDir = path.join(process.cwd(), 'public', 'presentation-images')
 
@@ -93,16 +94,26 @@ export async function GET(request: NextRequest) {
   }
 
   const safeName = sectionId.replace(/[^a-zA-Z0-9-]/g, '_')
-  const filename = `telecaller_${safeName}.png`
-  const filepath = path.join(process.cwd(), 'public', 'presentation-images', filename)
+  const baseFilename = `telecaller_${safeName}`
+  const dirPath = path.join(process.cwd(), 'public', 'presentation-images')
 
-  if (fs.existsSync(filepath)) {
-    return NextResponse.json({
-      exists: true,
-      imageUrl: `/presentation-images/${filename}`
-    })
+  // Array of allowed extensions to check against
+  const extensions = ['.png', '.jpg', '.jpeg', '.webp', '.gif']
+
+  // Loop through extensions to see if any file matches
+  for (const ext of extensions) {
+    const filename = `${baseFilename}${ext}`
+    const filepath = path.join(dirPath, filename)
+
+    if (fs.existsSync(filepath)) {
+      return NextResponse.json({
+        exists: true,
+        imageUrl: `/presentation-images/${filename}`
+      })
+    }
   }
 
+  // If loop finishes and no file is found
   return NextResponse.json({
     exists: false
   })
